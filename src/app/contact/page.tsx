@@ -6,11 +6,10 @@ import "./ContactPage.css";
 
 export default function ContactPage() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [isVisible, setIsVisible]   = useState(false);
+  const [form, setForm]             = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [hoveredField, setHoveredField] = useState<string | null>(null);
+  const [success, setSuccess]       = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -18,47 +17,17 @@ export default function ContactPage() {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Create floating icons for background
-    const floatingIcons: HTMLElement[] = [];
-    const iconClasses = [
-      'fa-regular fa-message', 'fa-regular fa-envelope', 'fa-regular fa-phone',
-      'fa-regular fa-location-dot', 'fa-regular fa-clock', 'fa-regular fa-user',
-      'fa-regular fa-paper-plane', 'fa-regular fa-comment', 'fa-regular fa-star'
-    ];
-
-    iconClasses.forEach((iconClass, index) => {
-      for (let i = 0; i < 3; i++) {
-        const icon = document.createElement('i');
-        icon.className = `floating-contact-icon ${iconClass}`;
-        icon.style.left = `${Math.random() * 100}%`;
-        icon.style.top = `${Math.random() * 100}%`;
-        icon.style.animationDelay = `${Math.random() * 15}s`;
-        icon.style.animationDuration = `${Math.random() * 30 + 20}s`;
-        icon.style.fontSize = `${Math.random() * 2 + 1}rem`;
-        icon.style.opacity = `${Math.random() * 0.08 + 0.02}`;
-        section.appendChild(icon);
-        floatingIcons.push(icon);
-      }
-    });
-
-    // Mouse move effect for cards
     const handleMouseMove = (e: MouseEvent) => {
-      const cards = document.querySelectorAll<HTMLElement>('.info-card, .form-card, .faq-item');
-      cards.forEach(card => {
+      const cards = document.querySelectorAll<HTMLElement>(".cp-info-item, .cp-faq-card");
+      cards.forEach((card) => {
         const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
+        card.style.setProperty("--mouse-x", `${((e.clientX - rect.left) / rect.width) * 100}%`);
+        card.style.setProperty("--mouse-y", `${((e.clientY - rect.top) / rect.height) * 100}%`);
       });
     };
 
-    section.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      floatingIcons.forEach(icon => icon.remove());
-      section.removeEventListener('mousemove', handleMouseMove);
-    };
+    section.addEventListener("mousemove", handleMouseMove);
+    return () => section.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -67,7 +36,6 @@ export default function ContactPage() {
       alert("Please fill all fields");
       return;
     }
-
     try {
       setSubmitting(true);
       const res = await fetch("/api/contact", {
@@ -75,9 +43,7 @@ export default function ContactPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       if (!res.ok) throw new Error("Failed to send message");
-
       setForm({ name: "", email: "", message: "" });
       setSuccess(true);
       setTimeout(() => setSuccess(false), 5000);
@@ -89,21 +55,18 @@ export default function ContactPage() {
     }
   }
 
-  // Structured data for SEO
   const contactData = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
     name: "Contact NiCol Technologies",
     url: "https://www.nicol.com/contact",
-    contactPoint: [
-      {
-        "@type": "ContactPoint",
-        telephone: "+251-911-123456",
-        contactType: "Customer Service",
-        areaServed: "ET",
-        availableLanguage: ["English", "Amharic"],
-      },
-    ],
+    contactPoint: [{
+      "@type": "ContactPoint",
+      telephone: "+251-939-193603",
+      contactType: "Customer Service",
+      areaServed: "ET",
+      availableLanguage: ["English", "Amharic"],
+    }],
     address: {
       "@type": "PostalAddress",
       streetAddress: "Getu Commercial Center, Bole",
@@ -113,315 +76,244 @@ export default function ContactPage() {
     },
   };
 
+  const faqs = [
+    { q: "How quickly do you respond?",         a: "We typically respond within 24 hours during business days. For urgent matters, give us a call." },
+    { q: "Do you support international clients?",a: "Yes, we work with clients worldwide via video calls, email, and project management tools." },
+    { q: "What services do you offer?",          a: "AI solutions, web development, mobile apps, cloud computing, UI/UX design, and IT consulting." },
+    { q: "Do you provide free consultations?",   a: "Yes, we offer a free 30-minute consultation to discuss your project and explore potential solutions." },
+  ];
+
   return (
     <>
       <StructuredData data={contactData} />
-      
-      <div 
-        className={`contact-page ${isVisible ? 'visible' : ''}`} 
+
+      <div
+        className={`cp-page ${isVisible ? "cp-page--visible" : ""}`}
         ref={sectionRef}
       >
-        {/* Floating Background Icons */}
-        <div className="contact-floating-icons"></div>
+        {/* Top accent bar */}
+        <div className="cp-top-bar" aria-hidden="true" />
 
-        {/* Hero Section */}
-        <section className="contact-hero">
-          <div className="container">
-            <div className="hero-content">
-              <div className="hero-badge">
-                <span className="badge-star">✦</span>
-                Get In Touch
-                <span className="badge-star">✦</span>
-              </div>
-              <h1 className="hero-title">
-                Let's <span className="gradient-text">Connect</span>
-              </h1>
-              <p className="hero-subtitle">
-                Have a project in mind? We'd love to hear about it. 
-                Reach out and let's start a conversation.
-              </p>
-            </div>
+        {/* ── Hero ─────────────────────────────────────── */}
+        <section className="cp-hero">
+          <div className="cp-container">
+            <p className="cp-eyebrow">
+              <span className="cp-dot" aria-hidden="true" />
+              Get in touch
+            </p>
+            <h1 className="cp-headline">
+              Let's start a <em>conversation.</em>
+            </h1>
+            <p className="cp-sub">
+              Have a project in mind? We'd love to hear about it.
+              Reach out and let's build something great together.
+            </p>
           </div>
         </section>
 
-        {/* Main Content */}
-        <div className="contact-main">
-          <div className="container">
-            <div className="contact-grid">
-              {/* Contact Information Column */}
-              <div className="contact-info-column">
-                <div className="info-card glass-card">
-                  <h2 className="info-card-title">
-                    <i className="fa-regular fa-circle-info"></i>
-                    Contact Information
-                  </h2>
-                  <p className="info-card-subtitle">
-                    We're here to help and answer any questions you might have
-                  </p>
-                  
-                  <div className="info-items">
-                    <div 
-                      className={`info-item ${hoveredField === 'phone' ? 'hovered' : ''}`}
-                      onMouseEnter={() => setHoveredField('phone')}
-                      onMouseLeave={() => setHoveredField(null)}
-                    >
-                      <div className="info-icon-wrapper">
-                        <i className="fa-regular fa-phone"></i>
-                      </div>
-                      <div className="info-details">
-                        <h3 className="info-label">Phone</h3>
-                        <a href="tel:+251939193603" className="info-value">+251-939-193603</a>
-                        <p className="info-note">Mon-Fri 9am-6pm</p>
-                      </div>
-                    </div>
+        <div className="cp-divider" aria-hidden="true" />
 
-                    <div 
-                      className={`info-item ${hoveredField === 'email' ? 'hovered' : ''}`}
-                      onMouseEnter={() => setHoveredField('email')}
-                      onMouseLeave={() => setHoveredField(null)}
-                    >
-                      <div className="info-icon-wrapper">
-                        <i className="fa-regular fa-envelope"></i>
-                      </div>
-                      <div className="info-details">
-                        <h3 className="info-label">Email</h3>
-                        <a href="mailto:info@nicol.com" className="info-value">Niftalemrex@gmail.com</a>
-                        <p className="info-note">24/7 support</p>
-                      </div>
-                    </div>
+        {/* ── Main grid ─────────────────────────────────── */}
+        <section className="cp-main">
+          <div className="cp-container cp-layout">
 
-                    <div 
-                      className={`info-item ${hoveredField === 'address' ? 'hovered' : ''}`}
-                      onMouseEnter={() => setHoveredField('address')}
-                      onMouseLeave={() => setHoveredField(null)}
-                    >
-                      <div className="info-icon-wrapper">
-                        <i className="fa-regular fa-location-dot"></i>
-                      </div>
-                      <div className="info-details">
-                        <h3 className="info-label">Office</h3>
-                        <p className="info-value">Getu Commercial Center</p>
-                        <p className="info-note">Bole, Addis Ababa, Ethiopia</p>
-                      </div>
-                    </div>
-                  </div>
+            {/* ── Left: info ── */}
+            <aside className="cp-aside">
 
-                  <div className="business-hours">
-                    <h3 className="hours-title">
-                      <i className="fa-regular fa-clock"></i>
-                      Business Hours
-                    </h3>
-                    <div className="hours-grid">
-                      <div className="hours-row">
-                        <span className="days">Monday - Friday</span>
-                        <span className="time">9:00 AM - 6:00 PM</span>
-                      </div>
-                      <div className="hours-row">
-                        <span className="days">Saturday</span>
-                        <span className="time">10:00 AM - 2:00 PM</span>
-                      </div>
-                      <div className="hours-row">
-                        <span className="days">Sunday</span>
-                        <span className="time closed">Closed</span>
-                      </div>
-                    </div>
-                  </div>
+              {/* Contact details */}
+              <div className="cp-panel">
+                <p className="cp-panel-eyebrow">Reach us</p>
+                <h2 className="cp-panel-title">Contact information.</h2>
 
-                  <div className="social-links">
-                    <h3 className="social-title">Follow Us</h3>
-                    <div className="social-icons">
-                      <a href="#" className="social-icon" aria-label="Facebook">
-                        <i className="fa-brands fa-facebook-f"></i>
-                      </a>
-                      <a href="#" className="social-icon" aria-label="Twitter">
-                        <i className="fa-brands fa-x-twitter"></i>
-                      </a>
-                      <a href="#" className="social-icon" aria-label="LinkedIn">
-                        <i className="fa-brands fa-linkedin-in"></i>
-                      </a>
-                      <a href="#" className="social-icon" aria-label="Instagram">
-                        <i className="fa-brands fa-instagram"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact Form Column */}
-              <div className="contact-form-column">
-                <div className="form-card glass-card">
-                  <h2 className="form-card-title">
-                    <i className="fa-regular fa-pen-to-square"></i>
-                    Send a Message
-                  </h2>
-                  <p className="form-card-subtitle">
-                    We'll get back to you within 24 hours
-                  </p>
-
-                  {success && (
-                    <div className="success-message">
-                      <i className="fa-regular fa-circle-check"></i>
-                      <div>
-                        <strong>Message sent successfully!</strong>
-                        <p>Thank you for contacting us. We'll respond shortly.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  <form onSubmit={handleSubmit} className="contact-form">
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label htmlFor="name" className="form-label">
-                          <i className="fa-regular fa-user"></i>
-                          Full Name <span className="required">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          placeholder="John Doe"
-                          value={form.name}
-                          onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          className="form-input"
-                          required
-                        />
-                      </div>
-
-                      <div className="form-group">
-                        <label htmlFor="email" className="form-label">
-                          <i className="fa-regular fa-envelope"></i>
-                          Email Address <span className="required">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          placeholder="john@example.com"
-                          value={form.email}
-                          onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          className="form-input"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="message" className="form-label">
-                        <i className="fa-regular fa-message"></i>
-                        Your Message <span className="required">*</span>
-                      </label>
-                      <textarea
-                        id="message"
-                        placeholder="Tell us about your project or inquiry..."
-                        rows={6}
-                        value={form.message}
-                        onChange={(e) => setForm({ ...form, message: e.target.value })}
-                        className="form-textarea"
-                        required
-                      ></textarea>
-                    </div>
-
-                    <div className="form-checkbox">
-                      <input type="checkbox" id="consent" required />
-                      <label htmlFor="consent">
-                        I agree to the <a href="/privacy">privacy policy</a> and consent to being contacted
-                      </label>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="submit-button"
-                    >
-                      {submitting ? (
-                        <>
-                          <span className="spinner"></span>
-                          Sending Message...
-                        </>
+                <div className="cp-info-list">
+                  {[
+                    { label: "Phone",    note: "Mon – Fri, 9 am – 6 pm", value: "+251 939 193 603",      href: "tel:+251939193603"             },
+                    { label: "Email",    note: "24 / 7 support",          value: "Niftalemrex@gmail.com", href: "mailto:Niftalemrex@gmail.com"  },
+                    { label: "Office",   note: "Bole, Addis Ababa, ET",   value: "Getu Commercial Center",href: undefined                       },
+                  ].map((item, i) => (
+                    <div className="cp-info-item" key={i}>
+                      <div className="cp-info-item-glow" aria-hidden="true" />
+                      <p className="cp-info-label">{item.label}</p>
+                      {item.href ? (
+                        <a href={item.href} className="cp-info-value">{item.value}</a>
                       ) : (
-                        <>
-                          <i className="fa-regular fa-paper-plane"></i>
-                          Send Message
-                        </>
+                        <p className="cp-info-value">{item.value}</p>
                       )}
-                    </button>
-                  </form>
+                      <p className="cp-info-note">{item.note}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Map Section */}
-        <section className="map-section">
-          <div className="container">
-            <div className="map-card glass-card">
-              <div className="map-header">
-                <h2 className="map-title">
-                  <i className="fa-regular fa-map"></i>
-                  Our Location
-                </h2>
-                <p className="map-subtitle">Visit us at our office in Addis Ababa</p>
+              {/* Hours */}
+              <div className="cp-panel cp-panel--hours">
+                <p className="cp-panel-eyebrow">Availability</p>
+                <h2 className="cp-panel-title">Business hours.</h2>
+                <div className="cp-hours">
+                  {[
+                    { days: "Monday – Friday", time: "9:00 AM – 6:00 PM", closed: false },
+                    { days: "Saturday",        time: "10:00 AM – 2:00 PM",closed: false },
+                    { days: "Sunday",          time: "Closed",            closed: true  },
+                  ].map((row, i) => (
+                    <div className="cp-hours-row" key={i}>
+                      <span className="cp-hours-days">{row.days}</span>
+                      <span className={`cp-hours-time ${row.closed ? "cp-hours-time--closed" : ""}`}>
+                        {row.time}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="map-container">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.845008905784!2d38.76958806966799!3d9.002166623768426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85ae1242b7f9%3A0xcd63ab57ec12af64!2sGetu%20Commercial%20Center.!5e0!3m2!1sen!2set!4v1773867270452!5m2!1sen!2set" 
-                  className="google-map"
-                  allowFullScreen 
-                  loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Getu Commercial Center Location"
-                ></iframe>
+
+              {/* Social */}
+              <div className="cp-panel cp-panel--social">
+                <p className="cp-panel-eyebrow">Follow us</p>
+                <div className="cp-social">
+                  {[
+                    { label: "Facebook",  href: "#", symbol: "f"  },
+                    { label: "Twitter/X", href: "#", symbol: "𝕏"  },
+                    { label: "LinkedIn",  href: "#", symbol: "in" },
+                    { label: "Instagram", href: "#", symbol: "ig" },
+                  ].map((s, i) => (
+                    <a key={i} href={s.href} className="cp-social-btn" aria-label={s.label}>
+                      {s.symbol}
+                    </a>
+                  ))}
+                </div>
               </div>
+
+            </aside>
+
+            {/* ── Right: form ── */}
+            <div className="cp-form-col">
+              <div className="cp-panel cp-panel--form">
+                <p className="cp-panel-eyebrow">Send us a message</p>
+                <h2 className="cp-panel-title">We'll reply within 24 hours.</h2>
+
+                {success && (
+                  <div className="cp-success">
+                    ✓ Message sent — we'll be in touch shortly.
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="cp-form">
+                  <div className="cp-form-row">
+                    <div className="cp-field">
+                      <label htmlFor="cp-name" className="cp-label">Full name</label>
+                      <input
+                        id="cp-name"
+                        type="text"
+                        placeholder="e.g. Abebe Girma"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="cp-input"
+                        required
+                      />
+                    </div>
+                    <div className="cp-field">
+                      <label htmlFor="cp-email" className="cp-label">Email address</label>
+                      <input
+                        id="cp-email"
+                        type="email"
+                        placeholder="you@example.com"
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="cp-input"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="cp-field">
+                    <label htmlFor="cp-message" className="cp-label">Your message</label>
+                    <textarea
+                      id="cp-message"
+                      placeholder="Tell us about your project or inquiry…"
+                      rows={6}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      className="cp-textarea"
+                      required
+                    />
+                  </div>
+
+                  <div className="cp-checkbox-row">
+                    <input type="checkbox" id="cp-consent" className="cp-checkbox" required />
+                    <label htmlFor="cp-consent" className="cp-checkbox-label">
+                      I agree to the <a href="/privacy" className="cp-link">privacy policy</a> and
+                      consent to being contacted.
+                    </label>
+                  </div>
+
+                  <button type="submit" disabled={submitting} className="cp-submit">
+                    {submitting ? (
+                      <><span className="cp-spinner" aria-hidden="true" /> Sending…</>
+                    ) : (
+                      <>
+                        Send message
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <div className="cp-divider" aria-hidden="true" />
+
+        {/* ── Map ───────────────────────────────────────── */}
+        <section className="cp-map-section">
+          <div className="cp-container">
+            <div className="cp-map-header">
+              <p className="cp-panel-eyebrow">Find us</p>
+              <h2 className="cp-map-title">Our location.</h2>
+              <p className="cp-map-sub">Visit us at our office in Addis Ababa, Ethiopia.</p>
+            </div>
+            <div className="cp-map-wrap">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.845008905784!2d38.76958806966799!3d9.002166623768426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85ae1242b7f9%3A0xcd63ab57ec12af64!2sGetu%20Commercial%20Center.!5e0!3m2!1sen!2set!4v1773867270452!5m2!1sen!2set"
+                className="cp-map"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Getu Commercial Center Location"
+              />
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="faq-section">
-          <div className="container">
-            <div className="faq-header">
-              <h2 className="faq-title">
-                <span className="gradient-text">Frequently</span> Asked Questions
-              </h2>
-              <p className="faq-subtitle">
-                Quick answers to common questions about our services
-              </p>
+        <div className="cp-divider" aria-hidden="true" />
+
+        {/* ── FAQ ───────────────────────────────────────── */}
+        <section className="cp-faq">
+          <div className="cp-container">
+            <div className="cp-faq-header">
+              <p className="cp-panel-eyebrow">FAQ</p>
+              <h2 className="cp-faq-title">Common questions.</h2>
+              <p className="cp-faq-sub">Quick answers to what people ask most.</p>
             </div>
-            
-            <div className="faq-grid">
-              <div className="faq-item glass-card">
-                <div className="faq-icon">
-                  <i className="fa-regular fa-clock"></i>
+
+            <div className="cp-faq-grid">
+              {faqs.map((faq, i) => (
+                <div className="cp-faq-card" key={i}>
+                  <div className="cp-faq-card-glow" aria-hidden="true" />
+                  <span className="cp-faq-index" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="cp-faq-q">{faq.q}</h3>
+                  <p className="cp-faq-a">{faq.a}</p>
                 </div>
-                <h3 className="faq-question">How quickly do you respond?</h3>
-                <p className="faq-answer">We typically respond within 24 hours during business days. For urgent matters, give us a call.</p>
-              </div>
-              
-              <div className="faq-item glass-card">
-                <div className="faq-icon">
-                  <i className="fa-regular fa-globe"></i>
-                </div>
-                <h3 className="faq-question">Do you support international clients?</h3>
-                <p className="faq-answer">Yes, we work with clients worldwide via video calls, email, and project management tools.</p>
-              </div>
-              
-              <div className="faq-item glass-card">
-                <div className="faq-icon">
-                  <i className="fa-regular fa-code"></i>
-                </div>
-                <h3 className="faq-question">What services do you offer?</h3>
-                <p className="faq-answer">AI solutions, web development, mobile apps, cloud computing, UI/UX design, and IT consulting.</p>
-              </div>
-              
-              <div className="faq-item glass-card">
-                <div className="faq-icon">
-                  <i className="fa-regular fa-handshake"></i>
-                </div>
-                <h3 className="faq-question">Do you provide free consultations?</h3>
-                <p className="faq-answer">Yes, we offer a free 30-minute consultation to discuss your project and explore potential solutions.</p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
+
       </div>
     </>
   );

@@ -2,23 +2,22 @@
 
 import React, { useEffect, useState } from "react";
 import StructuredData from "../../components/seo/StructuredData";
-import { getReviews, Review } from "../../lib/fetchReviews"; // ✅ updated import
+import { getReviews, Review } from "../../lib/fetchReviews";
 import Card from "../../components/ui/Card";
 import "./ReviewsPage.css";
 
 export default function ReviewsPage() {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [form, setForm] = useState({ name: "", comment: "", rating: 5 });
-  const [submitting, setSubmitting] = useState(false);
+  const [reviews, setReviews]           = useState<Review[]>([]);
+  const [loading, setLoading]           = useState(true);
+  const [formStatus, setFormStatus]     = useState<"idle" | "success" | "error">("idle");
+  const [form, setForm]                 = useState({ name: "", comment: "", rating: 5 });
+  const [submitting, setSubmitting]     = useState(false);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [activeFilter, setActiveFilter] = useState<number | null>(null);
 
-  // 🔄 Load reviews
   async function loadReviews() {
     try {
-      const data = await getReviews(); // ✅ use getReviews
+      const data = await getReviews();
       setReviews(data || []);
     } catch (err) {
       console.error(err);
@@ -28,68 +27,52 @@ export default function ReviewsPage() {
     }
   }
 
-  useEffect(() => {
-    loadReviews();
-  }, []);
+  useEffect(() => { loadReviews(); }, []);
 
-  // 🚀 Submit via API
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setFormStatus('idle');
-
+    setFormStatus("idle");
     if (!form.name.trim() || !form.comment.trim()) {
       alert("Please fill all fields");
       return;
     }
-
     try {
       setSubmitting(true);
-
       const res = await fetch("/api/reviews", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to submit");
-      }
-
-      setFormStatus('success');
+      if (!res.ok) throw new Error("Failed to submit");
+      setFormStatus("success");
       setForm({ name: "", comment: "", rating: 5 });
       await loadReviews();
-      
-      setTimeout(() => setFormStatus('idle'), 3000);
+      setTimeout(() => setFormStatus("idle"), 3000);
     } catch (err) {
       console.error(err);
-      setFormStatus('error');
+      setFormStatus("error");
     } finally {
       setSubmitting(false);
     }
   }
 
-  // Filter reviews by rating
-  const filteredReviews = activeFilter 
-    ? reviews.filter(r => Math.floor(r.rating) === activeFilter)
+  const filteredReviews = activeFilter
+    ? reviews.filter((r) => Math.floor(r.rating) === activeFilter)
     : reviews;
 
-  // 📊 Calculate statistics
   const totalReviews = reviews.length;
-  const avgRating = totalReviews > 0
+  const avgRating    = totalReviews > 0
     ? (reviews.reduce((acc, r) => acc + r.rating, 0) / totalReviews).toFixed(1)
     : "5.0";
-  
-  const ratingCounts = [5, 4, 3, 2, 1].map(stars => ({
+
+  const ratingCounts = [5, 4, 3, 2, 1].map((stars) => ({
     stars,
-    count: reviews.filter(r => Math.floor(r.rating) === stars).length,
-    percentage: totalReviews > 0 
-      ? (reviews.filter(r => Math.floor(r.rating) === stars).length / totalReviews) * 100 
-      : 0
+    count: reviews.filter((r) => Math.floor(r.rating) === stars).length,
+    percentage: totalReviews > 0
+      ? (reviews.filter((r) => Math.floor(r.rating) === stars).length / totalReviews) * 100
+      : 0,
   }));
 
-  // SEO data
   const reviewsData = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -105,333 +88,259 @@ export default function ReviewsPage() {
       "@type": "Review",
       author: { "@type": "Person", name: r.name },
       reviewBody: r.comment,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: r.rating,
-        bestRating: "5",
-      },
+      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: "5" },
       datePublished: r.created_at,
     })),
   };
+
   return (
     <>
       <StructuredData data={reviewsData} />
-      
-      <div className="reviews-page">
-        {/* Floating Background Icons - Matching other components */}
-        <div className="reviews-floating-icons">
-          <i className="fa-regular fa-star"></i>
-          <i className="fa-regular fa-star"></i>
-          <i className="fa-regular fa-star"></i>
-          <i className="fa-regular fa-star"></i>
-          <i className="fa-regular fa-star"></i>
-          <i className="fa-regular fa-message"></i>
-          <i className="fa-regular fa-thumbs-up"></i>
-          <i className="fa-regular fa-heart"></i>
-          <i className="fa-regular fa-comment"></i>
-          <i className="fa-regular fa-user"></i>
-        </div>
 
-        {/* Hero Section with iOS 16 Glass */}
-        <section className="reviews-hero">
-          <div className="container">
-            <div className="hero-content">
-              <div className="hero-badge">
-                <span className="badge-star">✦</span>
-                Customer Reviews
-                <span className="badge-star">✦</span>
-              </div>
-              <h1 className="hero-title">
-                What Our <span className="gradient-text">Clients</span> Say
-              </h1>
-              <p className="hero-subtitle">
-                Join 50+ satisfied businesses that have transformed their digital presence with us
-              </p>
-            </div>
-            
-            {/* iOS 16 Glass Stats Cards */}
-            <div className="stats-grid">
-              <div className="stat-card glass-card">
-                <div className="stat-value">{avgRating}</div>
-                <div className="stat-label">Average Rating</div>
-                <div className="stat-rating">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span key={star} className={`star ${star <= Number(avgRating) ? 'filled' : ''}`}>★</span>
+      <div className="rv-page">
+        {/* Top accent bar */}
+        <div className="rv-top-bar" aria-hidden="true" />
+
+        {/* ── Hero ─────────────────────────────────────── */}
+        <section className="rv-hero">
+          <div className="rv-container">
+            <p className="rv-eyebrow">
+              <span className="rv-dot" aria-hidden="true" />
+              Client Reviews
+            </p>
+            <h1 className="rv-headline">
+              What our <em>clients</em> say.
+            </h1>
+            <p className="rv-sub">
+              Join 50+ satisfied businesses that have transformed their digital presence with us.
+            </p>
+
+            {/* Stats row */}
+            <div className="rv-stats">
+              <div className="rv-stat">
+                <span className="rv-stat-value">{avgRating}</span>
+                <span className="rv-stat-label">Average Rating</span>
+                <div className="rv-stars" aria-label={`${avgRating} out of 5 stars`}>
+                  {[1,2,3,4,5].map((s) => (
+                    <span key={s} className={`rv-star ${s <= Number(avgRating) ? "rv-star--filled" : ""}`}>★</span>
                   ))}
                 </div>
-                <div className="stat-trend">Based on {totalReviews} reviews</div>
               </div>
-              
-              <div className="stat-card glass-card">
-                <div className="stat-value">{totalReviews}</div>
-                <div className="stat-label">Total Reviews</div>
-                <div className="stat-icon-group">
-                  <i className="fa-regular fa-message"></i>
-                  <i className="fa-regular fa-comment"></i>
-                  <i className="fa-regular fa-star"></i>
-                </div>
-                <div className="stat-trend positive">↑ 20% this month</div>
+              <div className="rv-stat-divider" aria-hidden="true" />
+              <div className="rv-stat">
+                <span className="rv-stat-value">{totalReviews}</span>
+                <span className="rv-stat-label">Total Reviews</span>
+                <span className="rv-stat-trend">↑ 20% this month</span>
               </div>
-              
-              <div className="stat-card glass-card">
-                <div className="stat-value">98%</div>
-                <div className="stat-label">Satisfaction Rate</div>
-                <div className="stat-icon-group">
-                  <i className="fa-regular fa-thumbs-up"></i>
-                  <i className="fa-regular fa-heart"></i>
-                  <i className="fa-regular fa-face-smile"></i>
-                </div>
-                <div className="stat-trend positive">↑ 12% vs last month</div>
+              <div className="rv-stat-divider" aria-hidden="true" />
+              <div className="rv-stat">
+                <span className="rv-stat-value">98%</span>
+                <span className="rv-stat-label">Satisfaction Rate</span>
+                <span className="rv-stat-trend">↑ 12% vs last month</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Main Content */}
-        <section className="reviews-main">
-          <div className="container">
-            <div className="reviews-layout">
-              {/* Left Column - Review Form & Distribution */}
-              <div className="reviews-form-column">
-                {/* iOS 16 Glass Form Card */}
-                <div className="form-card glass-card">
-                  <h2 className="form-title">Write a Review</h2>
-                  <p className="form-subtitle">Share your experience with our community</p>
-                  
-                  <form onSubmit={handleSubmit} className="review-form">
-                    <div className="form-group">
-                      <label htmlFor="name" className="form-label">
-                        <i className="fa-regular fa-user"></i>
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        placeholder="John Doe"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="form-input"
-                        required
-                      />
-                    </div>
+        <div className="rv-divider" aria-hidden="true" />
 
-                    <div className="form-group">
-                      <label htmlFor="rating" className="form-label">
-                        <i className="fa-regular fa-star"></i>
-                        Rating
-                      </label>
-                      <div className="rating-selector">
-                        {[1, 2, 3, 4, 5].map((rating) => (
-                          <button
-                            key={rating}
-                            type="button"
-                            onClick={() => setForm({ ...form, rating })}
-                            onMouseEnter={() => setHoveredRating(rating)}
-                            onMouseLeave={() => setHoveredRating(0)}
-                            className={`rating-star ${(hoveredRating || form.rating) >= rating ? 'active' : ''}`}
-                          >
-                            ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+        {/* ── Main ─────────────────────────────────────── */}
+        <section className="rv-main">
+          <div className="rv-container rv-layout">
 
-                    <div className="form-group">
-                      <label htmlFor="comment" className="form-label">
-                        <i className="fa-regular fa-message"></i>
-                        Your Review
-                      </label>
-                      <textarea
-                        id="comment"
-                        placeholder="Tell us about your experience..."
-                        value={form.comment}
-                        onChange={(e) => setForm({ ...form, comment: e.target.value })}
-                        className="form-textarea"
-                        rows={5}
-                        required
-                      />
-                    </div>
+            {/* ── Left: form + distribution ── */}
+            <aside className="rv-aside">
 
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="submit-button"
-                    >
-                      {submitting ? (
-                        <>
-                          <span className="spinner"></span>
-                          Submitting...
-                        </>
-                      ) : (
-                        <>
-                          <i className="fa-regular fa-paper-plane"></i>
-                          Submit Review
-                        </>
-                      )}
-                    </button>
+              {/* Form */}
+              <div className="rv-panel">
+                <p className="rv-panel-eyebrow">Share your experience</p>
+                <h2 className="rv-panel-title">Write a review.</h2>
 
-                    {formStatus === 'success' && (
-                      <div className="success-message">
-                        <i className="fa-regular fa-circle-check"></i>
-                        Thank you for your review!
-                      </div>
-                    )}
-
-                    {formStatus === 'error' && (
-                      <div className="error-message">
-                        <i className="fa-regular fa-circle-exclamation"></i>
-                        Something went wrong. Please try again.
-                      </div>
-                    )}
-                  </form>
-                </div>
-
-                {/* Rating Distribution Card */}
-                {totalReviews > 0 && (
-                  <div className="distribution-card glass-card">
-                    <h3 className="distribution-title">
-                      <i className="fa-regular fa-chart-bar"></i>
-                      Rating Distribution
-                    </h3>
-                    <div className="distribution-bars">
-                      {ratingCounts.map(({ stars, count, percentage }) => (
-                        <div 
-                          key={stars} 
-                          className={`distribution-row ${activeFilter === stars ? 'active' : ''}`}
-                          onClick={() => setActiveFilter(activeFilter === stars ? null : stars)}
-                        >
-                          <span className="stars-label">{stars} ★</span>
-                          <div className="progress-bar-container">
-                            <div 
-                              className="progress-bar" 
-                              style={{ width: `${percentage}%` }}
-                            ></div>
-                          </div>
-                          <span className="count-label">{count}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {activeFilter && (
-                      <button 
-                        className="clear-filter"
-                        onClick={() => setActiveFilter(null)}
-                      >
-                        <i className="fa-regular fa-xmark"></i>
-                        Clear filter
-                      </button>
-                    )}
+                <form onSubmit={handleSubmit} className="rv-form">
+                  <div className="rv-field">
+                    <label htmlFor="rv-name" className="rv-label">Your name</label>
+                    <input
+                      id="rv-name"
+                      type="text"
+                      placeholder="e.g. Abebe Girma"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="rv-input"
+                      required
+                    />
                   </div>
-                )}
+
+                  <div className="rv-field">
+                    <label className="rv-label">Rating</label>
+                    <div className="rv-rating-row">
+                      {[1,2,3,4,5].map((r) => (
+                        <button
+                          key={r}
+                          type="button"
+                          className={`rv-rating-btn ${(hoveredRating || form.rating) >= r ? "rv-rating-btn--on" : ""}`}
+                          onClick={() => setForm({ ...form, rating: r })}
+                          onMouseEnter={() => setHoveredRating(r)}
+                          onMouseLeave={() => setHoveredRating(0)}
+                          aria-label={`${r} star${r > 1 ? "s" : ""}`}
+                        >★</button>
+                      ))}
+                      <span className="rv-rating-label">{form.rating} / 5</span>
+                    </div>
+                  </div>
+
+                  <div className="rv-field">
+                    <label htmlFor="rv-comment" className="rv-label">Your review</label>
+                    <textarea
+                      id="rv-comment"
+                      placeholder="Tell us about your experience..."
+                      value={form.comment}
+                      onChange={(e) => setForm({ ...form, comment: e.target.value })}
+                      className="rv-textarea"
+                      rows={5}
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" disabled={submitting} className="rv-submit">
+                    {submitting ? (
+                      <><span className="rv-spinner" aria-hidden="true" /> Submitting…</>
+                    ) : (
+                      <>
+                        Submit review
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </>
+                    )}
+                  </button>
+
+                  {formStatus === "success" && (
+                    <p className="rv-form-msg rv-form-msg--success">
+                      ✓ Thank you for your review!
+                    </p>
+                  )}
+                  {formStatus === "error" && (
+                    <p className="rv-form-msg rv-form-msg--error">
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+                </form>
               </div>
 
-              {/* Right Column - Reviews List */}
-              <div className="reviews-list-column">
-                <div className="reviews-header">
-                  <h2 className="reviews-title">
-                    <i className="fa-regular fa-comments"></i>
-                    Customer Reviews
-                  </h2>
-                  <span className="reviews-count">
-                    {filteredReviews.length} {filteredReviews.length === 1 ? 'review' : 'reviews'}
-                  </span>
-                </div>
-
-                {loading ? (
-                  <div className="loading-state glass-card">
-                    <div className="spinner"></div>
-                    <p>Loading reviews...</p>
-                  </div>
-                ) : filteredReviews.length === 0 ? (
-                  <div className="empty-state glass-card">
-                    <div className="empty-icon">
-                      <i className="fa-regular fa-star"></i>
-                    </div>
-                    <h3 className="empty-title">
-                      {activeFilter ? `No ${activeFilter}-star reviews yet` : 'No Reviews Yet'}
-                    </h3>
-                    <p className="empty-description">
-                      {activeFilter 
-                        ? `Be the first to leave a ${activeFilter}-star review!`
-                        : 'Be the first to share your experience with us!'}
-                    </p>
-                    {activeFilter && (
-                      <button 
-                        className="empty-action"
-                        onClick={() => setActiveFilter(null)}
+              {/* Distribution */}
+              {totalReviews > 0 && (
+                <div className="rv-panel rv-panel--dist">
+                  <p className="rv-panel-eyebrow">Breakdown</p>
+                  <h2 className="rv-panel-title">Rating distribution.</h2>
+                  <div className="rv-dist">
+                    {ratingCounts.map(({ stars, count, percentage }) => (
+                      <div
+                        key={stars}
+                        className={`rv-dist-row ${activeFilter === stars ? "rv-dist-row--active" : ""}`}
+                        onClick={() => setActiveFilter(activeFilter === stars ? null : stars)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && setActiveFilter(activeFilter === stars ? null : stars)}
+                        aria-pressed={activeFilter === stars}
                       >
-                        View all reviews
-                      </button>
-                    )}
-                  </div>
-                ) : (
-                  <div className="reviews-grid">
-                    {filteredReviews.map((review) => (
-                      <div key={review.id} className="review-card-wrapper">
-                        <Card>
-                          <div className="review-header">
-                            <div className="reviewer-info">
-                              <div className="reviewer-avatar">
-                                {review.name.charAt(0).toUpperCase()}
-                              </div>
-                              <div>
-                                <h3 className="reviewer-name">{review.name}</h3>
-                                <div className="review-rating">
-                                  {[1, 2, 3, 4, 5].map((star) => (
-                                    <span 
-                                      key={star} 
-                                      className={`star ${star <= review.rating ? 'filled' : ''}`}
-                                    >
-                                      ★
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                            {review.created_at && (
-                              <span className="review-date">
-                                <i className="fa-regular fa-calendar"></i>
-                                {new Date(review.created_at).toLocaleDateString('en-US', {
-                                  year: 'numeric',
-                                  month: 'short',
-                                  day: 'numeric'
-                                })}
-                              </span>
-                            )}
-                          </div>
-                          <p className="review-comment">{review.comment}</p>
-                        </Card>
+                        <span className="rv-dist-label">{stars}★</span>
+                        <div className="rv-dist-track">
+                          <div className="rv-dist-fill" style={{ width: `${percentage}%` }} />
+                        </div>
+                        <span className="rv-dist-count">{count}</span>
                       </div>
                     ))}
                   </div>
-                )}
+                  {activeFilter && (
+                    <button className="rv-clear" onClick={() => setActiveFilter(null)}>
+                      Clear filter
+                    </button>
+                  )}
+                </div>
+              )}
+            </aside>
+
+            {/* ── Right: list ── */}
+            <div className="rv-list-col">
+              <div className="rv-list-header">
+                <h2 className="rv-list-title">Customer reviews</h2>
+                <span className="rv-list-count">
+                  {filteredReviews.length} {filteredReviews.length === 1 ? "review" : "reviews"}
+                </span>
               </div>
+
+              {loading ? (
+                <div className="rv-state">
+                  <span className="rv-spinner" aria-hidden="true" />
+                  <p>Loading reviews…</p>
+                </div>
+              ) : filteredReviews.length === 0 ? (
+                <div className="rv-state">
+                  <p className="rv-state-title">
+                    {activeFilter ? `No ${activeFilter}-star reviews yet.` : "No reviews yet."}
+                  </p>
+                  <p className="rv-state-sub">Be the first to share your experience.</p>
+                  {activeFilter && (
+                    <button className="rv-clear" onClick={() => setActiveFilter(null)}>
+                      View all reviews
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="rv-cards">
+                  {filteredReviews.map((review) => (
+                    <div key={review.id} className="rv-card">
+                      <div className="rv-card-top">
+                        <div className="rv-card-left">
+                          <div className="rv-avatar" aria-hidden="true">
+                            {review.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="rv-reviewer-name">{review.name}</p>
+                            <div className="rv-stars" aria-label={`${review.rating} out of 5`}>
+                              {[1,2,3,4,5].map((s) => (
+                                <span key={s} className={`rv-star ${s <= review.rating ? "rv-star--filled" : ""}`}>★</span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        {review.created_at && (
+                          <span className="rv-date">
+                            {new Date(review.created_at).toLocaleDateString("en-US", {
+                              year: "numeric", month: "short", day: "numeric",
+                            })}
+                          </span>
+                        )}
+                      </div>
+                      <p className="rv-comment">{review.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
           </div>
         </section>
 
-        {/* Trust Badges Section */}
-        <section className="trust-badges">
-          <div className="container">
-            <div className="badges-grid">
-              <div className="badge-item">
-                <i className="fa-regular fa-shield badge-icon"></i>
-                <span className="badge-text">Verified Reviews</span>
+        <div className="rv-divider" aria-hidden="true" />
+
+        {/* ── Trust badges ─────────────────────────────── */}
+        <section className="rv-trust">
+          <div className="rv-container rv-trust-grid">
+            {[
+              { icon: "✦", label: "Verified Reviews"       },
+              { icon: "⌁", label: "Secure & Private"       },
+              { icon: "◎", label: "Real Customer Feedback"  },
+              { icon: "✓", label: "Authentic Experiences"   },
+            ].map((b, i) => (
+              <div className="rv-badge" key={i}>
+                <span className="rv-badge-icon" aria-hidden="true">{b.icon}</span>
+                <span className="rv-badge-label">{b.label}</span>
               </div>
-              <div className="badge-item">
-                <i className="fa-regular fa-lock badge-icon"></i>
-                <span className="badge-text">Secure & Private</span>
-              </div>
-              <div className="badge-item">
-                <i className="fa-regular fa-clock badge-icon"></i>
-                <span className="badge-text">Real Customer Feedback</span>
-              </div>
-              <div className="badge-item">
-                <i className="fa-regular fa-circle-check badge-icon"></i>
-                <span className="badge-text">Authentic Experiences</span>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
+
       </div>
     </>
   );

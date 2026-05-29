@@ -1,50 +1,91 @@
-import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import "./Footer.css";
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
+  const links = [
+    { href: "/",        label: "Home"     },
+    { href: "/about",   label: "About"    },
+    { href: "/services",label: "Services" },
+    { href: "/reviews", label: "Reviews"  },
+    { href: "/contact", label: "Contact"  },
+  ];
+
   return (
     <footer className="footer">
+
+      {/* Top accent line */}
+      <div className="footer-top-bar" aria-hidden="true" />
+
       <div className="footer-container">
-        {/* About */}
-        <div>
-          <h2>NiCol Technologies</h2>
-          <p>We build AI, Web, and Mobile solutions.</p>
+
+        {/* Brand */}
+        <div className="footer-brand">
+          <Link href="/" className="footer-logo">
+            <Image
+              src="/images/NiColl.png"
+              alt="NiCol Technologies"
+              width={130}
+              height={36}
+              className="footer-logo-img"
+            />
+          </Link>
+          <p className="footer-tagline">
+            We build AI, Web, and Mobile solutions
+            <br />for companies that move fast and build to last.
+          </p>
+          {/* Social / badge row — extend as needed */}
+          <div className="footer-badge">
+            <span className="footer-dot" aria-hidden="true" />
+            Addis Ababa, Ethiopia
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div className="footer-col">
+          <h3 className="footer-heading">Quick Links</h3>
+          <ul className="footer-links">
+            {links.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="footer-link">{l.label}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Contact */}
-        <div>
-          <h2>Contact</h2>
-          <p>
-            Email:{" "}
-            <a href="mailto:Niftalemawel@gmail.com" className="footer-link">
-              Niftalemawel@gmail.com
-            </a>
-          </p>
-          <p>
-            Phone:{" "}
-            <a href="tel:+251939193603" className="footer-link">
-              +251 939 193603
-            </a>
-          </p>
-          <p>Address: Addis Ababa, Ethiopia</p>
-        </div>
-
-        {/* Links */}
-        <div>
-          <h2>Quick Links</h2>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/reviews">Reviews</a></li>
-            <li><a href="/contact">Contact</a></li>
+        <div className="footer-col">
+          <h3 className="footer-heading">Contact</h3>
+          <ul className="footer-contact">
+            <li>
+              <span className="footer-contact-label">Email</span>
+              <a href="mailto:Niftalemawel@gmail.com" className="footer-link">
+                Niftalemawel@gmail.com
+              </a>
+            </li>
+            <li>
+              <span className="footer-contact-label">Phone</span>
+              <a href="tel:+251939193603" className="footer-link">
+                +251 939 193 603
+              </a>
+            </li>
+            <li>
+              <span className="footer-contact-label">Location</span>
+              <span className="footer-contact-value">Addis Ababa, Ethiopia</span>
+            </li>
           </ul>
         </div>
+
       </div>
 
+      {/* Bottom bar */}
       <div className="footer-bottom">
-        © {new Date().getFullYear()} NiCol Technologies. All rights reserved.
+        <span>© {year} NiCol Technologies. All rights reserved.</span>
+        <span className="footer-bottom-accent">Built with precision.</span>
       </div>
+
     </footer>
   );
 }
