@@ -6,9 +6,9 @@ import { getReviews, Review } from "../lib/fetchReviews"; // ✅ updated
 
 // Metadata for the page
 export const metadata = {
-  title: "NiCol Technologies | AI, Web & Mobile Solutions",
+  title: "NiCol Ttechnology | AI, Web & Mobile Solutions",
   description:
-    "NiCol Technologies provides AI, Web, and Mobile solutions in Ethiopia. Check our services, reviews, and contact information.",
+    "NiCol Ttechnology provides AI, Web, and Mobile solutions in Ethiopia. Check our services, reviews, and contact information.",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const localBusinessData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "NiCol Technologies",
+    name: "NiCol Technology",
     image: [
       "https://www.nicol.com/images/photo1.jpg",
       "https://www.nicol.com/images/photo2.jpg",
