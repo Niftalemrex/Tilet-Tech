@@ -58,12 +58,12 @@ export default function ContactPage() {
   const contactData = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: "Contact NiCol Technologies",
-    url: "https://www.nicol.com/contact",
+    name: "Contact Tilet Technologies",
+    url: "https://tilet-technology.vercel.app/contact",
     contactPoint: [{
       "@type": "ContactPoint",
       telephone: "+251-939-193603",
-      contactType: "Customer Service",
+      contactType: "Customer Support & Incident Desk",
       areaServed: "ET",
       availableLanguage: ["English", "Amharic"],
     }],
@@ -77,10 +77,10 @@ export default function ContactPage() {
   };
 
   const faqs = [
-    { q: "How quickly do you respond?",         a: "We typically respond within 24 hours during business days. For urgent matters, give us a call." },
-    { q: "Do you support international clients?",a: "Yes, we work with clients worldwide via video calls, email, and project management tools." },
-    { q: "What services do you offer?",          a: "AI solutions, web development, mobile apps, cloud computing, UI/UX design, and IT consulting." },
-    { q: "Do you provide free consultations?",   a: "Yes, we offer a free 30-minute consultation to discuss your project and explore potential solutions." },
+    { q: "How quickly do you respond?",         a: "We respond within 24 hours during business days. For urgent cybersecurity incidents, our hotline responds immediately." },
+    { q: "Do you offer security audits & penetration tests?", a: "Yes, we perform comprehensive web/network penetration testing, cloud vulnerability assessments, and ISO 27001 / SOC 2 readiness audits." },
+    { q: "Do you support international clients?",a: "Yes, we work with enterprises and startups globally via encrypted communications, Git workflows, and dedicated PM dashboards." },
+    { q: "What core services do you offer?",     a: "Full-stack web development, mobile apps (iOS & Android), AI solutions, cloud computing, cybersecurity defense, UI/UX design, and IT consulting." },
   ];
 
   return (

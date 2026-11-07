@@ -1,13 +1,13 @@
 /* ─────────────────────────────────────────────────────────
-   NiCol Technology · Footer
-   Matches minimal luxury dark theme
+   Tilet Technologies · Footer
+   Matches minimal luxury dark theme & Cyber aesthetic
 ───────────────────────────────────────────────────────── */
 
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap');
 
 /* ── Tokens ──────────────────────────────────────────── */
 :root {
-  --ink:      #0d0d0d;
+  --ink:      #000000;
   --fog:      rgba(255,255,255,0.055);
   --line:     rgba(255,255,255,0.08);
   --line-2:   rgba(255,255,255,0.04);
@@ -29,6 +29,17 @@
 }
 
 /* ── Top accent bar ──────────────────────────────────── */
+.footer-tilet-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 10;
+}
+
 .footer-top-bar {
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -56,21 +67,23 @@
 
 .footer-logo {
   display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
+  opacity: 0.95;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .footer-logo:hover {
   opacity: 1;
+  transform: translateY(-1px);
 }
 
 .footer-logo-img {
   object-fit: contain;
   object-position: left center;
-  height: 34px;
+  height: 38px;
   width: auto;
-  max-width: 140px;
+  max-width: 150px;
 }
 
 .footer-tagline {

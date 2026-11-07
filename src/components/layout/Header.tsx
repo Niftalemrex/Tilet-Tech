@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
+import TiletPattern from "../ui/TiletPattern";
 import "./Header.css";
 
 export default function Header() {
@@ -79,9 +80,9 @@ export default function Header() {
             <Link href="/" className="header-logo">
               <Image
                 src="/images/NiColl.png"
-                alt="NiCol Technologies"
-                width={140}
-                height={40}
+                alt="Tilet Technologies"
+                width={130}
+                height={32}
                 priority
                 className="logo-image"
               />
@@ -130,6 +131,11 @@ export default function Header() {
               <li><Link href="/contact"  onClick={handleMobileLinkClick} className="mobile-nav-link">Contact</Link></li>
             </ul>
           </nav>
+        </div>
+
+        {/* Ethiopian Tilet horizontal ribbon below header */}
+        <div className="header-tilet-strip" aria-hidden="true">
+          <TiletPattern height={7} opacity={0.65} />
         </div>
       </header>
     </>

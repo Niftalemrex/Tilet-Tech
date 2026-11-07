@@ -29,64 +29,72 @@ const ServicesPage: React.FC = () => {
     "@type": "Service",
     provider: {
       "@type": "Organization",
-      name: "NiCol Technologies",
-      url: "https://www.nicol.com/services",
+      name: "Tilet Technologies",
+      url: "https://tilet-technology.vercel.app/services",
     },
     serviceType: [
+      "Cybersecurity & Zero Trust",
       "Web Development",
       "Mobile App Development",
-      "AI Solutions",
-      "Cloud Computing",
-      "UI/UX Design",
-      "IT Consulting",
+      "AI & Machine Learning",
+      "Cloud Infrastructure & DevOps",
+      "UI/UX Design & Architecture",
+      "IT Security Consulting",
     ],
     areaServed: "ET",
     description:
-      "NiCol Technologies provides web, mobile, AI, cloud, design, and consulting services to Ethiopian businesses and startups.",
+      "Tilet Technologies provides cybersecurity, web, mobile, AI, cloud, and security consulting services to Ethiopian businesses and international enterprises.",
   };
 
   const serviceList: Service[] = [
     {
       title: "Web Development",
       description:
-        "Responsive, modern websites using React, Next.js, and Tailwind CSS. Full-stack solutions with optimal performance and SEO.",
+        "Full-stack web applications and platforms using React, Next.js, Node.js, and TypeScript. Optimized for ultra-fast performance, SEO, and enterprise scale.",
       icon: "fa-solid fa-laptop-code",
-      stats: { projects: "50+", satisfaction: "98%" },
+      stats: { projects: "70+", satisfaction: "99%" },
     },
     {
       title: "Mobile App Development",
       description:
-        "Native Android & iOS apps using Kotlin, Java, Flutter, and Dart. Cross-platform solutions with seamless UX.",
+        "High-performance native Android & iOS and cross-platform apps using Flutter, React Native, Kotlin, and Swift. Seamless UX with real-time offline-first sync.",
       icon: "fa-solid fa-mobile-screen",
-      stats: { projects: "30+", satisfaction: "95%" },
+      stats: { projects: "45+", satisfaction: "98%" },
     },
     {
-      title: "AI Solutions",
+      title: "AI Solutions & Machine Learning",
       description:
-        "Intelligent solutions using Python, OpenCV, and machine learning. Custom AI models for your business needs.",
+        "Intelligent AI pipelines, computer vision, OpenCV, predictive neural models, and enterprise LLM integrations customized for your business workflows.",
       icon: "fa-solid fa-robot",
-      stats: { projects: "20+", satisfaction: "97%" },
+      stats: { projects: "30+", satisfaction: "98%" },
     },
     {
-      title: "Cloud Computing",
+      title: "Cybersecurity & Zero Trust",
       description:
-        "Scalable cloud infrastructure on AWS, Azure, and Google Cloud. DevOps practices for continuous delivery.",
+        "Proactive threat defense, penetration testing, SIEM SOC monitoring, DevSecOps pipelines, vulnerability audits, and ISO 27001 / SOC 2 compliance engineering.",
+      icon: "fa-solid fa-shield-halved",
+      stats: { projects: "40+", satisfaction: "100%" },
+    },
+    {
+      title: "Cloud Computing & DevOps",
+      description:
+        "Auto-scaling cloud infrastructure on AWS, Azure, and Google Cloud with Kubernetes, Docker, Terraform, and automated CI/CD continuous deployment.",
       icon: "fa-solid fa-cloud",
-      stats: { projects: "25+", satisfaction: "96%" },
+      stats: { projects: "50+", satisfaction: "99%" },
     },
     {
-      title: "UI/UX Design",
+      title: "UI/UX & Product Design",
       description:
-        "User-centered design with modern aesthetics. Wireframing, prototyping, and user testing for optimal experiences.",
+        "User-centered digital design, interactive Figma prototypes, wireframing, design systems, and rigorous usability testing for optimal conversion.",
       icon: "fa-solid fa-paint-brush",
-      stats: { projects: "40+", satisfaction: "99%" },
+      stats: { projects: "55+", satisfaction: "99%" },
     },
     {
-      title: "IT Consulting",
+      title: "IT Consulting & Architecture",
       description:
-        "Strategic technology advice, architecture planning, and digital transformation for businesses of all sizes.",
+        "Strategic technology advice, enterprise software architecture planning, digital transformation roadmaps, and 24/7 technical advisory.",
       icon: "fa-solid fa-headset",
-      stats: { projects: "60+", satisfaction: "100%" },
+      stats: { projects: "75+", satisfaction: "100%" },
     },
   ];
 

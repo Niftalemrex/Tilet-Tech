@@ -76,7 +76,7 @@ export default function ReviewsPage() {
   const reviewsData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "NiCol Technologies",
+    name: "Tilet Technologies",
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: avgRating,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import TiletPattern from "../ui/TiletPattern";
 import "./Footer.css";
 
 export default function Footer() {
@@ -16,8 +17,10 @@ export default function Footer() {
   return (
     <footer className="footer">
 
-      {/* Top accent line */}
-      <div className="footer-top-bar" aria-hidden="true" />
+      {/* Top authentic Ethiopian Tilet embroidery ribbon */}
+      <div className="footer-tilet-bar" aria-hidden="true">
+        <TiletPattern height={11} opacity={0.65} />
+      </div>
 
       <div className="footer-container">
 
@@ -26,20 +29,20 @@ export default function Footer() {
           <Link href="/" className="footer-logo">
             <Image
               src="/images/NiColl.png"
-              alt="NiCol Technologies"
+              alt="Tilet Technologies"
               width={130}
               height={36}
               className="footer-logo-img"
             />
           </Link>
           <p className="footer-tagline">
-            We build AI, Web, and Mobile solutions
+            We build Web, Mobile, AI, Cloud, and Cybersecurity solutions
             <br />for companies that move fast and build to last.
           </p>
           {/* Social / badge row — extend as needed */}
           <div className="footer-badge">
             <span className="footer-dot" aria-hidden="true" />
-            Addis Ababa, Ethiopia
+            Addis Ababa, Ethiopia · Global Delivery
           </div>
         </div>
 
@@ -82,8 +85,8 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="footer-bottom">
-        <span>© {year} NiCol Technologies. All rights reserved.</span>
-        <span className="footer-bottom-accent">Built with precision.</span>
+        <span>© {year} Tilet Technologies. All rights reserved.</span>
+        <span className="footer-bottom-accent">Zero-Trust Security & Precision Engineering.</span>
       </div>
 
     </footer>

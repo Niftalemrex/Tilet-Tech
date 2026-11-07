@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────
-   NiCol Technology · Reviews Page
+   Tilet Technologies · Reviews Page
    Direction: Minimal Luxury — dark, quiet, expensive
 ───────────────────────────────────────────────────────── */
 
@@ -7,8 +7,8 @@
 
 /* ── Tokens ──────────────────────────────────────────── */
 :root {
-  --ink:      #0d0d0d;
-  --ink-2:    #1a1a1a;
+  --ink:      #000000;
+  --ink-2:    #080808;
   --fog:      rgba(255,255,255,0.045);
   --fog-2:    rgba(255,255,255,0.025);
   --line:     rgba(255,255,255,0.08);

@@ -6,9 +6,18 @@ import { getReviews, Review } from "../lib/fetchReviews"; // ✅ updated
 
 // Metadata for the page
 export const metadata = {
-  title: "NiCol Ttechnology | AI, Web & Mobile Solutions",
+  title: "Tilet Technologies | AI, Web, Mobile & Cybersecurity Solutions",
   description:
-    "NiCol Ttechnology provides AI, Web, and Mobile solutions in Ethiopia. Check our services, reviews, and contact information.",
+    "Tilet Technologies provides AI, Web Development, Mobile Apps, Cloud Infrastructure, and Cybersecurity solutions in Ethiopia and worldwide.",
+  keywords: [
+    "Tilet Technologies",
+    "Web Development Ethiopia",
+    "Mobile App Development Addis Ababa",
+    "AI Solutions Ethiopia",
+    "Cybersecurity Ethiopia",
+    "Cloud Computing",
+    "Full-Stack Development",
+  ],
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -34,13 +43,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const localBusinessData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "NiCol Technology",
+    name: "Tilet Technologies",
     image: [
-      "https://www.nicol.com/images/photo1.jpg",
-      "https://www.nicol.com/images/photo2.jpg",
-      "https://www.nicol.com/images/photo3.jpg",
+      "https://tilet-technology.vercel.app/images/photo1.jpg",
+      "https://tilet-technology.vercel.app/images/photo2.jpg",
+      "https://tilet-technology.vercel.app/images/photo3.jpg",
     ],
-    url: "https://nicol-technology.vercel.app",
+    url: "https://tilet-technology.vercel.app",
     telephone: "+251-939-193603",
     address: {
       "@type": "PostalAddress",
@@ -52,9 +61,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     priceRange: "ETB 53,151",
     openingHours: "Mo-Fr 09:00-18:00",
     sameAs: [
-      "https://www.facebook.com/nicoltech",
-      "https://www.linkedin.com/company/nicoltech",
-      "https://twitter.com/nicoltech",
+      "https://www.facebook.com/tilettech",
+      "https://www.linkedin.com/company/tilettech",
+      "https://twitter.com/tilettech",
     ],
     aggregateRating: {
       "@type": "AggregateRating",

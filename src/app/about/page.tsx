@@ -44,24 +44,24 @@ const AboutPage: React.FC = () => {
   }, []);
 
   const milestones: Milestone[] = [
-    { year: "2020", title: "Company Founded",       description: "NiCol Technologies was established with a vision to transform Ethiopian businesses through technology." },
-    { year: "2021", title: "First 10 Projects",     description: "Successfully delivered web and mobile solutions for local startups and enterprises." },
-    { year: "2022", title: "AI & Cloud Expansion",  description: "Launched AI solutions and cloud consulting services for enterprise clients." },
-    { year: "2023", title: "50+ Projects Milestone",description: "Reached 50+ successful projects across 10+ industries with 99% client satisfaction." },
+    { year: "2020", title: "Company Founded",       description: "Tilet Technologies was established with a vision to transform Ethiopian businesses through resilient technology and digital innovation." },
+    { year: "2021", title: "First 20+ Systems",     description: "Successfully delivered mission-critical web and mobile solutions for local startups and enterprises." },
+    { year: "2022", title: "AI & Cloud Expansion",  description: "Launched production AI models, computer vision systems, and cloud consulting services for enterprise clients." },
+    { year: "2024", title: "Cyber Defense & SOC",   description: "Established our premier Cybersecurity division, providing zero-trust architecture, threat defense, and ISO 27001 readiness." },
   ];
 
   const values = [
-    { title: "Innovation",     icon: "fa-solid fa-lightbulb", description: "Pushing boundaries with cutting-edge technology and creative solutions." },
-    { title: "Quality",        icon: "fa-solid fa-medal",     description: "Delivering excellence through rigorous testing and best practices." },
-    { title: "Integrity",      icon: "fa-solid fa-handshake", description: "Building trust through transparency, honesty, and ethical practices." },
-    { title: "Client Success", icon: "fa-solid fa-trophy",    description: "Your success is our success — we measure our achievements by yours." },
+    { title: "Innovation",     icon: "fa-solid fa-lightbulb", description: "Pushing boundaries with cutting-edge software architecture, AI, and creative engineering." },
+    { title: "Zero-Trust Security", icon: "fa-solid fa-shield-halved", description: "Securing every layer of infrastructure with rigorous audits, defense-in-depth, and strict encryption." },
+    { title: "Integrity",      icon: "fa-solid fa-handshake", description: "Building lasting trust through transparency, ethical hacking, and uncompromising standards." },
+    { title: "Client Success", icon: "fa-solid fa-trophy",    description: "Your business resilience is our success — we measure our achievements by your enterprise growth." },
   ];
 
   const teamMembers: TeamMember[] = [
-    { name: "Niftalem Awel",    role: "Founder & CEO",      bio: "Full-stack developer with 10+ years experience in building scalable solutions.", icon: "fa-solid fa-user-tie"    },
-    { name: "Hibist Demu",      role: "Lead AI Engineer",   bio: "AI specialist focused on machine learning and computer vision applications.",   icon: "fa-solid fa-brain"        },
-    { name: "Merdekiyos Tasew", role: "Senior Developer",   bio: "Expert in web technologies and cloud architecture.",                            icon: "fa-solid fa-laptop-code"  },
-    { name: "Abel Tesfu",       role: "UI/UX Director",     bio: "Passionate about creating intuitive and beautiful user experiences.",           icon: "fa-solid fa-paint-brush"  },
+    { name: "Niftalem Awel",    role: "Founder & Chief Architect", bio: "Full-stack architect & security strategist with 10+ years experience in resilient high-scale systems.", icon: "fa-solid fa-user-shield" },
+    { name: "Hibist Demu",      role: "Lead AI Engineer",          bio: "AI specialist focused on neural networks, machine learning, and computer vision systems.", icon: "fa-solid fa-brain" },
+    { name: "Merdekiyos Tasew", role: "SecOps & Cloud Lead",       bio: "Expert in zero-trust cloud infrastructure, penetration testing, and Kubernetes orchestration.", icon: "fa-solid fa-terminal" },
+    { name: "Abel Tesfu",       role: "Product & UX Director",     bio: "Passionate about crafting intuitive, high-performance, and accessible user experiences.", icon: "fa-solid fa-compass-drafting" },
   ];
 
   return (
@@ -89,9 +89,10 @@ const AboutPage: React.FC = () => {
           </h1>
 
           <p className="about-sub">
-            NiCol Technologies is a premier software development company dedicated to
-            transforming Ethiopian businesses through innovative web, mobile, and AI solutions.
-            We combine global expertise with local understanding.
+            Tilet Technologies is a premier software development and cybersecurity company dedicated to
+            transforming Ethiopian businesses through innovative full-stack web platforms, mobile apps,
+            AI solutions, cloud infrastructure, and advanced cybersecurity defense.
+            We combine global engineering standards with deep local craftsmanship.
           </p>
         </div>
 
@@ -108,6 +109,19 @@ const AboutPage: React.FC = () => {
               <span className="about-stat-label">{s.label}</span>
             </div>
           ))}
+        </div>
+
+        {/* ── Meaning of Tilet ────────────────────────── */}
+        <div className="about-heritage-card">
+          <div className="about-heritage-inner">
+            <div className="about-geez-stamp">ጥለት</div>
+            <div className="about-heritage-text">
+              <h3 className="about-heritage-title">The Philosophy of Tilet (ጥለት)</h3>
+              <p className="about-heritage-desc">
+                In Ethiopian tradition, <strong>ጥለት (Tilet)</strong> represents the intricate, hand-woven geometric embroidery bordering traditional garments. It stands for patience, interlocking harmony, and structural perfection. At Tilet Technologies, we carry this heritage into modern software engineering—weaving together full-stack applications, artificial intelligence, and impenetrable cybersecurity defense into enduring digital architectures.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* ── Divider ───────────────────────────────────── */}

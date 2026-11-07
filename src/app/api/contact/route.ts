@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/src/lib/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/src/lib/supabaseClient";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -7,6 +7,11 @@ export async function POST(req: Request) {
 
   if (!name || !email || !message) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  }
+
+  if (!isSupabaseConfigured) {
+    console.log("[Tilet Contact Message Received (Local Simulation)]:", { name, email, message });
+    return NextResponse.json({ success: true, simulated: true });
   }
 
   const { error } = await supabase.from("contact_messages").insert([

@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────
-   NiCol Technology · About Page
+   Tilet Technologies · About Page
    Direction: Minimal Luxury — dark, quiet, expensive
 ───────────────────────────────────────────────────────── */
 
@@ -7,9 +7,9 @@
 
 /* ── Tokens ──────────────────────────────────────────── */
 :root {
-  --ink:      #0d0d0d;
-  --ink-2:    #1a1a1a;
-  --ink-3:    #2a2a2a;
+  --ink:      #000000;
+  --ink-2:    #080808;
+  --ink-3:    #101010;
   --fog:      rgba(255,255,255,0.045);
   --fog-2:    rgba(255,255,255,0.025);
   --line:     rgba(255,255,255,0.08);
@@ -47,6 +47,72 @@
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   opacity: 0.45;
   z-index: 2;
+}
+
+/* ── About Tilet Heritage Card ───────────────────────── */
+.about-heritage-card {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-heritage-inner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 36px;
+  padding: 40px;
+  align-items: center;
+}
+
+.about-geez-stamp {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Ethiopic", sans-serif;
+  font-size: 3.6rem;
+  font-weight: 700;
+  color: #d4af37;
+  line-height: 1;
+  padding: 20px;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-heritage-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-heritage-title {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--white);
+}
+
+.about-heritage-desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .about-heritage-inner {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 20px;
+  }
+  .about-geez-stamp {
+    width: fit-content;
+    font-size: 2.6rem;
+    padding: 12px 20px;
+  }
 }
 
 /* ── Container ───────────────────────────────────────── */
